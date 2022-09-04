@@ -105,7 +105,7 @@ function game() {
     let gameState = decideWinner(scorePlayer, scoreComputer);
 
     if (gameState == 1) {
-        console.log(`Player wins with ${scorePlayer} | ${scoreComputer}points`);
+        console.log(`You win with ${scorePlayer} | ${scoreComputer}points`);
 
     } else if (gameState == 1) {
         console.log(`Computer wins with ${scoreComputer} | ${scorePlayer} points`);
