@@ -1,25 +1,77 @@
-
 const rockPaperScissorsArray = ["rock", "paper", "scissors"];
+let actualScore = [0, 0]
+let gamesPlayed = 0
 
-function computerSelection() {
-    let randomIndex = Math.floor(Math.random() * 2);
-    return rockPaperScissorsArray[randomIndex];
+const choiceButtons = document.querySelectorAll(".rpsButton");
+
+function choiceButtonClickEvent(button) {
+    console.log("hello")
+    button.addEventListener("click", function(e) {
+        let playerChoice = e.target.textContent;
+        let computerChoice = computerSelection();
+        let roundResult = playRound(playerChoice, computerChoice);
+        console.log(roundResult[0]);
+        let resultText = document.querySelector(".resultShow");
+        resultText.textContent = roundResult[0];
+
+        let gameResultText = document.querySelector(".info");
+        gamesPlayed++;
+        gameResultText.textContent = `Game ${gamesPlayed} out of 5` 
+
+        scoreUpdater(roundResult[1], false)
+        
+
+        if (gamesPlayed == 6) {
+            let gameState = decideWinner(actualScore[1], actualScore[0]);
+            if (gameState == 1) {
+                gameResultText.textContent = `The player won the match with ${actualScore[1]} vs ${actualScore[0]}!`;
+            } else if (gameState == 0) {
+                gameResultText.textContent = `The computer won the match! with ${actualScore[1]} vs ${actualScore[0]}`;
+            } else {
+                gameResultText.textContent = `The match ended in a draw! with ${actualScore[1]} vs ${actualScore[0]}`;
+            }
+            actualScore = [0,0];
+            gamesPlayed = 0;
+
+            scoreUpdater(2, true);
+        }
+
+
+    });
+};
+
+function scoreUpdater(point, bool) {
+    let plrScoreCounter = document.querySelector("#player-score");
+    let computerScoreCounter = document.querySelector("#computer-score")
+
+    //to reset the scores
+    if (bool) {
+        plrScoreCounter.textContent = "Score Player: 0"
+        computerScoreCounter.textContent = "Score Computer: 0";
+        return;
+    }
+
+    if (point == 1) {
+        actualScore[1] += 1;
+        plrScoreCounter.textContent = `Score Player: ${actualScore[1]}`
+
+    }
+    else if (point == 0) {
+        actualScore[0] += 1;
+        computerScoreCounter.textContent = `Score Computer: ${actualScore[0]}`
+    }
+
+    
 }
 
-function playerSelection() {
-    let properChoice = false;
-    let choice;
-   while (properChoice == false) {
-        choice = prompt("Rock, Paper or Scissors?");
-        rockPaperScissorsArray.forEach(function(item, index) {
-            if (item == choice.toLowerCase()) {
-               properChoice = true;
-            }
-        });
-   }
-   return choice;
-   
 
+
+choiceButtons.forEach(choiceButtonClickEvent)
+
+
+function computerSelection() {
+    let randomIndex = Math.floor(Math.random() * 3);
+    return rockPaperScissorsArray[randomIndex];
 }
 
 
@@ -28,11 +80,9 @@ function playRound(playerSelection, computerSelection) {
         if (computerSelection == "paper") {
             return ["You Lose! Paper beats Rock", 0];
         }
-            
         else if (computerSelection == "scissors") {
             return ["You win! Rock beats Scissors", 1];
         }
-
         else {
             return ["Draw! You both choose Rock", 2];
         }
@@ -78,41 +128,3 @@ function decideWinner(scorePlayer, scoreComputer) {
         return 2
     }
 }
-
-
-function game() {
-    
-    let scorePlayer = 0;
-    let scoreComputer = 0;
-
-    for (let i = 0; i < 5; i++) {
-        let cSelection = computerSelection();
-        let pSelection = playerSelection();
-        console.log(cSelection, pSelection)
-
-        let stateArray = playRound(pSelection, cSelection);
-
-        if (stateArray[1] = 0) {
-            scoreComputer++;
-        }
-        else if (stateArray[1] = 1) {
-            scorePlayer++;
-        }
-
-        console.log(stateArray[0]);
-    }
-
-    let gameState = decideWinner(scorePlayer, scoreComputer);
-
-    if (gameState == 1) {
-        console.log(`You win with ${scorePlayer} | ${scoreComputer}points`);
-
-    } else if (gameState == 1) {
-        console.log(`Computer wins with ${scoreComputer} | ${scorePlayer} points`);
-
-    } else {
-        console.log(`You had a draw with ${scoreComputer} |  ${scorePlayer} points`);
-    }
-}
-
-game();
