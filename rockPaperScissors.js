@@ -16,12 +16,13 @@ function choiceButtonClickEvent(button) {
 
         let gameResultText = document.querySelector(".info");
         gamesPlayed++;
-        gameResultText.textContent = `Game ${gamesPlayed} out of 5` 
+        gameResultText.textContent = `Game ${gamesPlayed} out of 5`;
 
-        scoreUpdater(roundResult[1], false)
+        scoreUpdater(roundResult[1], false);
+        console.log(actualScore);
         
 
-        if (gamesPlayed == 6) {
+        if (gamesPlayed == 5) {
             let gameState = decideWinner(actualScore[1], actualScore[0]);
             if (gameState == 1) {
                 gameResultText.textContent = `The player won the match with ${actualScore[1]} vs ${actualScore[0]}!`;
@@ -46,28 +47,25 @@ function scoreUpdater(point, bool) {
 
     //to reset the scores
     if (bool) {
-        plrScoreCounter.textContent = "Score Player: 0"
+        plrScoreCounter.textContent = "Score Player: 0";
         computerScoreCounter.textContent = "Score Computer: 0";
         return;
     }
 
     if (point == 1) {
         actualScore[1] += 1;
-        plrScoreCounter.textContent = `Score Player: ${actualScore[1]}`
+        plrScoreCounter.textContent = `Score Player: ${actualScore[1]}`;
 
     }
     else if (point == 0) {
         actualScore[0] += 1;
-        computerScoreCounter.textContent = `Score Computer: ${actualScore[0]}`
+        computerScoreCounter.textContent = `Score Computer: ${actualScore[0]}`;
     }
 
     
 }
 
-
-
 choiceButtons.forEach(choiceButtonClickEvent)
-
 
 function computerSelection() {
     let randomIndex = Math.floor(Math.random() * 3);
